@@ -24,15 +24,22 @@ Vector* createVector() {
 }
 
 void kill(Vector* vector){
+    printf("\n");
+    free(vector->_array);
     free(vector);
     printf("Vector killed\n");
 }
 
 void initialize(Vector* vector){
     printf("Enter the size of the array: ");
-    scanf("%d",&(vector->_size));
+    scanf("%u", &(vector->_size));
 
-    vector->_array = (int *)malloc(vector->_size * sizeof(int));
+    if(vector->_size<=0){
+        printf("Size must be greater than 0\n");
+        exit(EXIT_FAILURE);
+    }
+
+    vector->_array = malloc(vector->_size * sizeof(int));
     if(vector->_array == NULL){
         printf("Memory allocation failed\n");
         exit(EXIT_FAILURE);
@@ -41,9 +48,10 @@ void initialize(Vector* vector){
 
 void populate(Vector* vector){
     printf("Enter the number of elements: ");
-    scanf("%d", &(vector->_length));
+    scanf("%u", &(vector->_length));
+
     if (vector->_length < 0 || vector->_length > vector->_size) {
-        printf("Invalid length. Length must be between 0 and %d.\n", vector->_size);
+        printf("Invalid length. Length must be between 0 and %u.\n", vector->_size);
         return;
     }
 
@@ -60,18 +68,35 @@ void display(const Vector* vector){
     }
 
     for (int i = 0; i < vector->_length; i++) {
-        printf(" %d", vector->_array[i]);
+        printf("%d ", vector->_array[i]);
     }
     printf("\n");
 }
 
 void push(Vector* vector, int value){
     if(vector->_array == NULL){
-        printf("You haven't allocated memory for the array");
-        return;
+        // Array not initialized, allocate initial memory block
+        vector->_size = 1;
+        vector->_length = 0;
+        vector->_array = malloc(vector->_size * sizeof(int));
+        if(vector->_array == NULL){
+            printf("Memory allocation failed\n");
+            exit(EXIT_FAILURE);
+        }
+    }else if(vector->_length >= vector->_size){
+        // Chech if there is enough memory in the array
+        int new_size = vector->_size * 2;
+        int* new_array = realloc(vector->_array, new_size * sizeof(int));
+        if(new_array == NULL){
+            printf("Memory allocation failed\n");
+            exit(EXIT_FAILURE);
+        }
+        
+        vector->_array = new_array;
+        vector->_size = new_size;
     }
 
-
+    // Add the evalue to the array
     vector->_array[vector->_length] = value;
     vector->_length++;
 }

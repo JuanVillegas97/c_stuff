@@ -4,8 +4,8 @@
 // Structure to represent a vector
 typedef struct Vector {
     int* _array;                 // Pointer to the array
-    int _size;                   // Number of elements in the vector
-    int _length;               // Length of the vector
+    unsigned int _size;                   // Number of elements in the vector
+    unsigned int _length;               // Length of the vector
 
     void (*kill)(struct Vector*);
     void (*initialize)(struct Vector*);
