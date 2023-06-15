@@ -1,35 +1,36 @@
 #include "vector.h"
 
-Vector* createVector(size_t element_size){
-    Vector* vector = (Vector*)malloc(sizeof(Vector));
-    if(vector == NULL){
-        fprintf(stderr,"Failed to allocate memory for the vector\n");
-        exit(EXIT_FAILURE);
-    }
-    vector->_element_size = element_size;
-    vector->_data = NULL;
-    vector->_capacity = 0;
-    vector->_size = 0;
+struct Vector createVector(){
+    struct Vector vector;
+    vector._capacity = 4;
+    vector._size = 0;
+    vector._data = malloc(vector._capacity * sizeof(int));
+
     return vector;
 }
 
-void destroyVector(Vector* vector){
-    free(vector->_data);
-    free(vector);
+void pushBack(struct Vector* vector, size_t value){
+    if(vector->_data == NULL){
+        printf("Vector has not been created yet\n");
+        return;
+    }
+    if(vector->_size>=vector->_capacity){
+        size_t new_capacity = vector->_capacity * 2;
+        int* new_data = realloc(vector->_data,new_capacity * sizeof(int));
+        vector->_capacity = new_capacity;
+        vector->_data = new_data;
+    }
+    vector->_data[vector->_size] = value;
+    vector->_size++;
 }
 
-void pushBack(Vector* vector, const void* value){
-    if(vector->_size > vector->_capacity){
-        size_t new_capacity = (vector->_capacity == 0) ? 1 : vector->_capacity * 2;
-        void* new_data = realloc(vector->_data, new_capacity * vector->_element_size * new_capacity);
-        if(new_data == NULL){
-            fprintf(stderr,"Failed to allocate memory for the vector\n");
-            exit(EXIT_FAILURE);
-        }
-        vector->_data = new_data;
-        vector->_capacity = new_capacity;
-        void* destination = (char*)vector->_data + (vector->_size * vector->_element_size);
-        memcpy(destination, value, vector->_element_size);
-        vector->_size++;
+void displayVector(const struct Vector vector){
+    if(vector._size == 0){
+        printf("Vector has not elements to be displayed\n");
+        return;
+    }
+    printf("The elements are: ");
+    for(size_t i = 0; i<vector._size; i++){
+        printf("%d ",vector._data[i]);
     }
 }

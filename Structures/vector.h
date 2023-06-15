@@ -5,20 +5,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct Vector{
-    void* _data;
-    size_t _element_size;
-    size_t _size;
+struct Vector{
+    int* _data;
     size_t _capacity;
+    size_t _size;
+};
 
-    void (*pushBack)(struct Vector*, const void*);
-} Vector;
+struct Vector createVector();
 
-Vector* createVector(size_t element_size);
-
-void destroyVector(Vector* vector);
-
-void pushBack(Vector* vector, const void* value);
-
+void pushBack(struct Vector* vector, size_t value);
+void displayVector(const struct Vector vector);
 
 #endif  // VECTOR_H
