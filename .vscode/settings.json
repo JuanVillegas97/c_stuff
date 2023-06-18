@@ -3,6 +3,9 @@
         "__bit_reference": "c",
         "__split_buffer": "c",
         "string": "c",
-        "vector": "c"
+        "vector": "c",
+        "functional": "c",
+        "unordered_map": "c",
+        "__string": "c"
     }
 }

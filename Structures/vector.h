@@ -9,11 +9,19 @@ struct Vector{
     int* _data;
     size_t _capacity;
     size_t _size;
+
+    void (*display)(const struct Vector vector);
+    void (*push)(struct Vector* vector, size_t value);
+    int (*pop)(struct Vector* vector);
+    void (*insert)(struct Vector* vector, const size_t index, const size_t value);
+    int (*delete)(struct Vector* vector, const size_t index);
 };
 
 struct Vector createVector();
 
-void pushBack(struct Vector* vector, size_t value);
-void displayVector(const struct Vector vector);
-
+void display(const struct Vector vector);
+void push(struct Vector* vector, size_t value);
+int pop(struct Vector* vector);
+void insert(struct Vector* vector, const size_t index, const size_t value);
+int delete(struct Vector* vector, const size_t index);
 #endif  // VECTOR_H
